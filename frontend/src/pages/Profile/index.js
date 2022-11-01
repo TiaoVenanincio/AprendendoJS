@@ -25,7 +25,7 @@ export default function Profile(){
         })
     }, [ongId]);
 
-    async function handleDeleteIncident( id){
+    async function handleDeleteIncident(id){
         try {
             await api.delete(`incidents/${id}`, {
                 headers: {
@@ -39,9 +39,22 @@ export default function Profile(){
         }
     }
 
+    async function handleDeleteOng(id){
+        try {
+            await api.delete(`ongs/${id}`, {
+                headers: {
+                    Authorization: ongId
+                }
+            });
+            localStorage.clear();
+            history.push('/');
+        } catch (err) {
+            alert('Erro ao deletar conta, tente novamente');
+        }
+    }
+
     function handleLogout(){
         localStorage.clear();
-
         history.push('/');
     }
 
@@ -57,9 +70,7 @@ export default function Profile(){
                     <FiPower size={18} color="#E02041" />
                 </button>
             </header>
-
             <h1>Casos cadastrados</h1>
-
             <ul>
                 {incidents.map(incident => (
                     <li key={incident.id}>
@@ -78,6 +89,9 @@ export default function Profile(){
                     </li>
                 ))}
             </ul>
+            <div>
+                <button onClick={() => handleDeleteOng(ongId)} type="button">Deletar conta</button>
+            </div>
         </div>
     );
 }
